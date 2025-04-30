@@ -33,7 +33,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83% 53.3%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   .dark {
@@ -77,16 +77,16 @@
 }
 
 .code-preview {
-  @apply flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md;
+  @apply flex flex-col items-center justify-center p-4 bg-white rounded-lg border border-border/60 shadow-sm transition-all hover:shadow-md;
   min-height: 250px;
 }
 
 .download-button {
-  @apply mt-4 inline-flex items-center gap-2;
+  @apply mt-4 inline-flex items-center gap-2 transition-all hover:bg-primary/10;
 }
 
 .preview-image {
-  @apply rounded-md border;
+  @apply rounded-md border border-border/40 shadow-sm;
 }
 
 .app-container {
@@ -99,4 +99,24 @@
 
 .form-container {
   @apply space-y-6 max-w-2xl mx-auto;
+}
+
+/* Enhanced UI elements */
+.card {
+  @apply transition-all duration-300;
+}
+
+/* Tab styling */
+.tabs-list {
+  @apply bg-muted/50 p-1;
+}
+
+/* Button hover effects */
+button {
+  @apply transition-all duration-200;
+}
+
+/* Form field styling */
+input, select {
+  @apply transition-colors focus:border-primary/50 focus:ring-primary/30;
 }

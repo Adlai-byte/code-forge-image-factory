@@ -44,7 +44,7 @@ const CodePreview: React.FC<CodePreviewProps> = ({ code, showFileName = false })
           onClick={handleDownload} 
           variant="outline" 
           size="sm" 
-          className="download-button"
+          className="download-button mt-2"
         >
           <Download size={16} /> Download
         </Button>
