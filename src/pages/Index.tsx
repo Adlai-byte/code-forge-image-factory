@@ -5,15 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Separator } from '@/components/ui/separator';
 import CodeGenerator from '@/components/CodeGenerator';
 import { QrCode, Barcode } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 const Index = () => {
   return (
     <div className="app-container">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-          Code Forge
-        </h1>
-        <p className="text-muted-foreground mt-2">Generate QR codes and barcodes easily</p>
+      <div className="mb-8">
+        <Logo />
+        <p className="text-muted-foreground mt-2 text-center">Generate QR codes and barcodes easily</p>
       </div>
       
       <Card className="shadow-lg border-primary/20 bg-gradient-to-b from-card to-card/95">
