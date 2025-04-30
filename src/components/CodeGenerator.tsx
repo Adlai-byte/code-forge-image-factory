@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import SingleCodeForm from './SingleCodeForm';
 import BulkCodeForm from './BulkCodeForm';
 import CodePreview from './CodePreview';
-import { Download, Gallery } from 'lucide-react';
+import { Download, ImageIcon } from 'lucide-react';
 
 export type CodeType = 'qrcode' | 'barcode';
 export type BarcodeType = 'code128' | 'ean13' | 'ean8' | 'code39';
