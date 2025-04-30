@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,10 +5,8 @@ import { Separator } from '@/components/ui/separator';
 import CodeGenerator from '@/components/CodeGenerator';
 import { QrCode, Barcode } from 'lucide-react';
 import Logo from '@/components/Logo';
-
 const Index = () => {
-  return (
-    <div className="app-container">
+  return <div className="app-container">
       <div className="mb-8">
         <Logo />
         <p className="text-muted-foreground mt-2 text-center">Generate QR codes and barcodes easily</p>
@@ -23,7 +20,7 @@ const Index = () => {
               <Barcode size={24} className="text-primary" />
             </div>
             <div>
-              <CardTitle className="text-2xl">Image Factory</CardTitle>
+              <CardTitle className="text-2xl">Code Forge</CardTitle>
               <CardDescription>
                 Generate single or bulk QR codes and barcodes for your needs
               </CardDescription>
@@ -41,8 +38,6 @@ const Index = () => {
           <p>© {new Date().getFullYear()} Code Forge Image Factory. All rights reserved.</p>
         </footer>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
