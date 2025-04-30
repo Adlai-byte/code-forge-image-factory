@@ -1,10 +1,13 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import SingleCodeForm from './SingleCodeForm';
 import BulkCodeForm from './BulkCodeForm';
 import CodePreview from './CodePreview';
-import { Download, ImageIcon } from 'lucide-react';
+import { Download, ImageIcon, FileArchive } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { createCodesZipFile } from '@/utils/zipUtils';
 
 export type CodeType = 'qrcode' | 'barcode';
 export type BarcodeType = 'code128' | 'ean13' | 'ean8' | 'code39';
@@ -19,6 +22,8 @@ export interface GeneratedCode {
 const CodeGenerator = () => {
   const [generatedCodes, setGeneratedCodes] = useState<GeneratedCode[]>([]);
   const [activeTab, setActiveTab] = useState<string>('single');
+  const [isDownloading, setIsDownloading] = useState(false);
+  const { toast } = useToast();
 
   const handleSingleCodeGenerated = (code: GeneratedCode) => {
     setGeneratedCodes([code]);
@@ -32,20 +37,50 @@ const CodeGenerator = () => {
     setGeneratedCodes([]);
   };
 
-  const handleBulkDownload = () => {
+  const handleSingleDownload = (code: GeneratedCode) => {
+    const link = document.createElement('a');
+    link.href = code.dataUrl;
+    link.download = `${code.value}-${code.type}${code.barcodeType ? `-${code.barcodeType}` : ''}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleBulkDownload = async () => {
     if (generatedCodes.length === 0) return;
     
-    // Use setTimeout to prevent UI freezing when handling many downloads
-    generatedCodes.forEach((code, index) => {
-      setTimeout(() => {
-        const link = document.createElement('a');
-        link.href = code.dataUrl;
-        link.download = `${code.value}-${code.type}${code.barcodeType ? `-${code.barcodeType}` : ''}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }, index * 100); // Add a small delay between downloads
-    });
+    try {
+      setIsDownloading(true);
+      
+      // Create a zip file containing all codes
+      const zipBlob = await createCodesZipFile(generatedCodes);
+      
+      // Create a download link for the zip file
+      const downloadUrl = URL.createObjectURL(zipBlob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = `codes-${new Date().toISOString().slice(0, 10)}.zip`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Clean up the URL object
+      URL.revokeObjectURL(downloadUrl);
+      
+      toast({
+        title: "Download complete",
+        description: `${generatedCodes.length} codes have been downloaded as a ZIP file.`,
+      });
+    } catch (error) {
+      console.error("Error creating zip file:", error);
+      toast({
+        title: "Download failed",
+        description: "There was an error creating the zip file. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -76,9 +111,11 @@ const CodeGenerator = () => {
                 variant="default" 
                 size="sm" 
                 onClick={handleBulkDownload}
+                disabled={isDownloading}
                 className="flex items-center gap-2"
               >
-                <Download size={16} /> Download All
+                <FileArchive size={16} /> 
+                {isDownloading ? 'Creating ZIP...' : 'Download as ZIP'}
               </Button>
             )}
           </div>
