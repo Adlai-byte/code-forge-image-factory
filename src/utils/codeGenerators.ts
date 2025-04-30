@@ -24,7 +24,7 @@ export const generateQRCode = async (value: string): Promise<string> => {
 // Generate barcode using JsBarcode
 export const generateBarcode = async (value: string, type: BarcodeType): Promise<string> => {
   // Dynamically import JsBarcode
-  const JsBarcode = await import('jsbarcode');
+  const JsBarcode = (await import('jsbarcode')).default;
   
   return new Promise((resolve, reject) => {
     try {
@@ -32,7 +32,7 @@ export const generateBarcode = async (value: string, type: BarcodeType): Promise
       const canvas = document.createElement('canvas');
       
       // Generate the barcode
-      JsBarcode.default(canvas, value, {
+      JsBarcode(canvas, value, {
         format: type,
         lineColor: '#000000',
         width: 2,
